@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/pages/dados_cadastrais.dart';
-import 'package:my_app/pages/pags/pagina1_page.dart';
-import 'package:my_app/pages/pags/pagina2_page.dart';
-import 'package:my_app/pages/pags/pagina3_page.dart';
+import 'package:my_app/pages/pags/card_page.dart';
+import 'package:my_app/pages/pags/list_view_v.dart';
+import 'package:my_app/pages/pags/list_view_h.dart';
+import 'package:my_app/pages/shared/widgets/custom_drawer.dart';
+import 'package:my_app/pages/tarefa_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,58 +27,7 @@ class _HomePageState extends State<HomePage> {
             "My App",
             style: GoogleFonts.acme(fontSize: 20),
           )),
-          drawer: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 30, horizontal: 20),
-                      width: double.infinity,
-                      child: const Text(
-                        "Cadastro",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DadosCadastrais()));
-                    },
-                  ),
-                  InkWell(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 30, horizontal: 20),
-                      width: double.infinity,
-                      child: const Text(
-                        "Acto 2",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
-                  InkWell(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 30, horizontal: 20),
-                      width: double.infinity,
-                      child: const Text(
-                        "Acto 3",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-          ),
+          drawer: const CustomDrawer(),
           body: Column(
             children: [
               Expanded(
@@ -88,11 +38,16 @@ class _HomePageState extends State<HomePage> {
                       posicaoPag = value;
                     });
                   },
-                  scrollDirection: Axis.vertical,
-                  children: const [Pagina1Page(), Pagina2Page(), Pagina3Page()],
+                  children: const [
+                    CardPage(),
+                    ListViewVertical(),
+                    ListViewHorizontal(),
+                    TarefaPage()
+                  ],
                 ),
               ),
               BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
                   onTap: (value) {
                     paginaController.jumpToPage(value);
                   },
@@ -104,6 +59,8 @@ class _HomePageState extends State<HomePage> {
                         icon: Icon(Icons.person_2), label: "Pag2"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.add), label: "Pag3"),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.list), label: "Pag4")
                   ])
             ],
           )),

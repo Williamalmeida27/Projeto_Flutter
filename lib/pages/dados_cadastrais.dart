@@ -26,7 +26,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
 
   @override
   void initState() {
-    // TODO: implement initState
     niveis = nivelRepository.retornaNivel();
     linguagens = liguagemRepository.ListaLinguagens();
     super.initState();
