@@ -21,7 +21,7 @@ class _CardPageState extends State<CardPage> {
   }
 
   Future<void> carregarDados() async {
-    Future.delayed(Duration(milliseconds: 100));
+    Future.delayed(Duration(milliseconds: 0));
     cardDetail = await CardDetailRepositorie.get();
     setState(() {});
   }

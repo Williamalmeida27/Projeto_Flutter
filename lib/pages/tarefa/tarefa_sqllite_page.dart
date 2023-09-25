@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/model/tarefa_list.dart';
-import 'package:my_app/repositories/tarefa_repository.dart';
+import 'package:my_app/model/tarefa_hive_model.dart';
+import 'package:my_app/model/tarefa_sqllite_model.dart';
+import 'package:my_app/repositories/sql/tarefa_sqllite_repository.dart';
+import 'package:my_app/repositories/tarefa_hive_repository.dart';
 
-class TarefaPage extends StatefulWidget {
-  const TarefaPage({super.key});
+class TarefaSqlitePage extends StatefulWidget {
+  const TarefaSqlitePage({super.key});
 
   @override
-  State<TarefaPage> createState() => _TarefaPageState();
+  State<TarefaSqlitePage> createState() => _TarefaSqlitePageState();
 }
 
-class _TarefaPageState extends State<TarefaPage> {
-  var tarefaRepository = TarefaRepository();
-  var _tarefas = <Tarefa>[];
+class _TarefaSqlitePageState extends State<TarefaSqlitePage> {
+  TarefaSQLiteRepository tarefaRepository = TarefaSQLiteRepository();
+  var _tarefas = <TarefaSQLiteModel>[];
   var descricaoController = TextEditingController();
   bool tarefasNaoConcluidas = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     carregarTarefa();
   }
 
   void carregarTarefa() async {
-    if (tarefasNaoConcluidas) {
-      _tarefas = await tarefaRepository.listarTarefaNaoConcluidas();
-    } else {
-      _tarefas = await tarefaRepository.listarTarefa();
-    }
-
+    _tarefas = await tarefaRepository.obterTarefas(tarefasNaoConcluidas);
     setState(() {});
   }
 
@@ -57,9 +53,12 @@ class _TarefaPageState extends State<TarefaPage> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            await tarefaRepository.adicionarTarefa(
-                                Tarefa(descricaoController.text, false));
+                            // await tarefaRepository.adicionarTarefa(
+                            //     Tarefa(descricaoController.text, false));
+                            tarefaRepository.salvar(TarefaSQLiteModel(
+                                0, descricaoController.text, false));
                             Navigator.pop(context);
+                            carregarTarefa();
                             setState(() {});
                           },
                           child: const Text("Salvar"),
@@ -93,19 +92,22 @@ class _TarefaPageState extends State<TarefaPage> {
                   itemBuilder: (BuildContext bc, int index) {
                     var tarefa = _tarefas[index];
                     return Dismissible(
-                      key: Key(tarefa.id),
+                      key: Key(tarefa.descricao!),
                       onDismissed: (DismissDirection dismissDirection) {
-                        tarefaRepository.removerTarefa(tarefa.id);
+                        // tarefaRepository.removerTarefa(tarefa.id);
+                        tarefaRepository.remover(tarefa.id);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(tarefa.descricao),
+                          Text(tarefa.descricao!),
                           Switch(
                               value: tarefa.concluido,
                               onChanged: (value) async {
-                                await tarefaRepository.alterarTarefa(
-                                    tarefa.id, value);
+                                // await tarefaRepository.alterarTarefa(
+                                // tarefa.id, value);
+                                tarefa.concluido = value;
+                                tarefaRepository.atualizar(tarefa);
                                 carregarTarefa();
                               })
                         ],

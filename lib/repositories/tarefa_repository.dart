@@ -10,7 +10,7 @@ class TarefaRepository {
 
   Future<void> alterarTarefa(String id, bool concluido) async {
     await Future.delayed(const Duration(milliseconds: 1));
-    _tarefas.where((tarefa) => tarefa.id == id).first.concluido;
+    _tarefas.where((tarefa) => tarefa.id == id).first.concluido = concluido;
   }
 
   Future<List<Tarefa>> listarTarefa() async {

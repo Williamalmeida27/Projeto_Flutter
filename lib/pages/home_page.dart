@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_app/pages/pags/card_page.dart';
+import 'package:my_app/pages/card_page.dart';
+import 'package:my_app/pages/clima_page.dart';
 import 'package:my_app/pages/pags/list_view_v.dart';
 import 'package:my_app/pages/pags/list_view_h.dart';
 import 'package:my_app/pages/shared/widgets/custom_drawer.dart';
-import 'package:my_app/pages/tarefa_page.dart';
+import 'package:my_app/pages/tarefa/tarefa_hive_page.dart';
+import 'package:my_app/pages/tarefa/tarefa_sqllite_page.dart';
+import 'package:my_app/pages/via_cep_http.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,7 +46,9 @@ class _HomePageState extends State<HomePage> {
                     CardPage(),
                     ListViewVertical(),
                     ListViewHorizontal(),
-                    TarefaPage()
+                    TarefaSqlitePage(),
+                    ViaCepHttp(),
+                    ClimaPage()
                   ],
                 ),
               ),
@@ -54,13 +60,17 @@ class _HomePageState extends State<HomePage> {
                   currentIndex: posicaoPag,
                   items: const [
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.home), label: "Pag1"),
+                        icon: FaIcon(FontAwesomeIcons.house), label: "Pag1"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.person_2), label: "Pag2"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.add), label: "Pag3"),
                     BottomNavigationBarItem(
-                        icon: Icon(Icons.list), label: "Pag4")
+                        icon: Icon(Icons.list), label: "Pag4"),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.download), label: "Pag5"),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.temple_buddhist), label: "Pag6")
                   ])
             ],
           )),
